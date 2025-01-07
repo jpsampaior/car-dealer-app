@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import VehicleSelector from "@/components/vehicle-selector/vehicle-selector";
 import { ResultsHeader } from "@/components/results-header/results-header";
+import { capitalize } from "@/lib/utils";
 
 interface VehicleModel {
   Model_Name: string;
@@ -56,7 +57,7 @@ const VehicleModels = async ({
         {vehicleModels.map((model) => (
           <div
             key={model.Model_Name}
-            className="p-4 border rounded-lg shadow-md"
+            className="p-4 border border-tertiary rounded-lg shadow-md"
           >
             <img
               src="https://placehold.co/400"
@@ -64,7 +65,7 @@ const VehicleModels = async ({
               className="w-full h-48 object-cover rounded-md mb-4"
             />
             <h2 className="text-xl font-semibold">{model.Model_Name}</h2>
-            <p className="text-gray-600">{model.Make_Name}</p>
+            <p className="text-gray-600">{capitalize(model.Make_Name)}</p>
             <p className="mt-2 text-lg font-bold text-blue-500">
               ${Math.floor(Math.random() * (50000 - 20000 + 1)) + 20000}
             </p>

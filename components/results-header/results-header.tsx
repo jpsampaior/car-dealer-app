@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
 import VehicleSelector from "../vehicle-selector/vehicle-selector";
+import { capitalize } from "@/lib/utils";
 
 export function ResultsHeader({
   makeName,
@@ -21,7 +22,7 @@ export function ResultsHeader({
     <>
       <div className="flex flex-col gap-3 justify-between items-center pb-4 lg:flex-row">
         <h1 className="text-2xl font-bold text-center">
-          {`Displaying vehicle models for ${makeName} (${year})`}
+          {`Displaying vehicle models for ${capitalize(makeName)} (${year})`}
         </h1>
         <Button onClick={toggleFilters}>
           {showFilters ? "Hide filters" : "Show filters"}
