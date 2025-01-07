@@ -62,10 +62,16 @@ const VehicleSelector = ({ model }: { model?: string }) => {
   return (
     <section
       className={`flex gap-3 text-center ${
-        model === "results-page" ? "flex-row items-center justify-center" : "flex-col"
+        model === "results-page"
+          ? "flex-col lg:flex-row items-center justify-center"
+          : "flex-col"
       }`}
     >
-      <div className="flex justify-center gap-4">
+      <div
+        className={`flex justify-center items-center gap-4 lg:flex-row ${
+          model === "results-page" ? "flex-row" : "flex-col"
+        }`}
+      >
         <Combobox
           placeholder="Select a vehicle make"
           items={vehicleMakes.map((make) => ({
@@ -82,7 +88,7 @@ const VehicleSelector = ({ model }: { model?: string }) => {
         />
 
         <Select value={selectedYear || ""} onValueChange={setSelectedYear}>
-          <SelectTrigger className="w-[130px]">
+          <SelectTrigger className="w-2/3 lg:w-[130px]">
             <SelectValue placeholder="Select a year" />
           </SelectTrigger>
           <SelectContent>
