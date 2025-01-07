@@ -21,7 +21,7 @@ interface VehicleMake {
   MakeName: string;
 }
 
-const VehicleSelector = () => {
+const VehicleSelector = ({ model }: { model?: string }) => {
   const [vehicleMakes, setVehicleMakes] = useState<VehicleMake[]>([]);
   const [selectedMake, setSelectedMake] = useState<VehicleMake | null>(null);
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
@@ -60,7 +60,11 @@ const VehicleSelector = () => {
       : "#";
 
   return (
-    <section className="text-center space-y-3">
+    <section
+      className={`flex gap-3 text-center ${
+        model === "results-page" ? "flex-row items-center justify-center" : "flex-col"
+      }`}
+    >
       <div className="flex justify-center gap-4">
         <Combobox
           placeholder="Select a vehicle make"
@@ -96,7 +100,7 @@ const VehicleSelector = () => {
       <div>
         <Link
           href={linkHref}
-          className={`inline-block h-11 ${
+          className={`inline-block h-9   ${
             isButtonDisabled ? "cursor-not-allowed" : ""
           }`}
         >
