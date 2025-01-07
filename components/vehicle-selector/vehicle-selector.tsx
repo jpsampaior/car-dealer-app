@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "../ui/button";
+import { capitalize } from "@/lib/utils";
 
 interface VehicleMake {
   MakeId: number;
@@ -22,7 +23,6 @@ interface VehicleMake {
 
 const VehicleSelector = () => {
   const [vehicleMakes, setVehicleMakes] = useState<VehicleMake[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
   const [selectedMake, setSelectedMake] = useState<VehicleMake | null>(null);
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
 
@@ -33,7 +33,12 @@ const VehicleSelector = () => {
           "https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json"
         );
         const data = await response.json();
-        setVehicleMakes(data.Results || []);
+
+        setVehicleMakes(
+          (data.Results || []).sort((a: VehicleMake, b: VehicleMake) =>
+            a.MakeName.localeCompare(b.MakeName)
+          )
+        );
       } catch (error) {
         console.error("Error fetching vehicle makes:", error);
       }
@@ -41,10 +46,6 @@ const VehicleSelector = () => {
 
     fetchVehicleMakes();
   }, []);
-
-  const filteredMakes = vehicleMakes.filter((make) =>
-    make.MakeName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   const currentYear = new Date().getFullYear();
   const years = Array.from(
@@ -55,19 +56,19 @@ const VehicleSelector = () => {
   const isButtonDisabled = !selectedMake || !selectedYear;
   const linkHref =
     selectedMake && selectedYear
-      ? `/vehicles/${selectedMake.MakeId}/${selectedYear}`
+      ? `/result/${selectedMake.MakeId}/${selectedYear}`
       : "#";
 
   return (
-    <section className="text-center">
+    <section className="text-center space-y-3">
       <div className="flex justify-center gap-4">
         <Combobox
           placeholder="Select a vehicle make"
-          items={filteredMakes.map((make) => ({
+          items={vehicleMakes.map((make) => ({
             value: make.MakeId.toString(),
-            label: make.MakeName,
+            label: capitalize(make.MakeName),
           }))}
-          selectedValue={selectedMake?.MakeName || ""}
+          selectedValue={selectedMake?.MakeId.toString()}
           onSelect={(value) => {
             const make = vehicleMakes.find(
               (make) => make.MakeId.toString() === value
@@ -75,8 +76,9 @@ const VehicleSelector = () => {
             setSelectedMake(make || null);
           }}
         />
+
         <Select value={selectedYear || ""} onValueChange={setSelectedYear}>
-          <SelectTrigger className="w-[100px]">
+          <SelectTrigger className="w-[130px]">
             <SelectValue placeholder="Select a year" />
           </SelectTrigger>
           <SelectContent>
@@ -91,12 +93,18 @@ const VehicleSelector = () => {
           </SelectContent>
         </Select>
       </div>
-      <Link
-        href={linkHref}
-        className={`h-11 m-0 ${isButtonDisabled ? "cursor-not-allowed" : ""}`}
-      >
-        <Button disabled={isButtonDisabled}>Search</Button>
-      </Link>
+      <div>
+        <Link
+          href={linkHref}
+          className={`inline-block h-11 ${
+            isButtonDisabled ? "cursor-not-allowed" : ""
+          }`}
+        >
+          <Button disabled={isButtonDisabled} className="h-full w-full">
+            Search
+          </Button>
+        </Link>
+      </div>
     </section>
   );
 };
