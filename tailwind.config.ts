@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  darkMode: ["class"],
+  stoneMode: ["class"],
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -13,13 +13,14 @@ const config: Config = {
         primary: "#F0C05D",
         secondary: "#2B3864",
         tertiary: "#6C718E",
-        background: {
-          default: "#20201F",
-          secondary: "#252B42",
-          tertiary: "#252424",
-          footer: "#333232",
+        dark: {
+          200: "#0D0F10",
+          300: "#131619",
+          400: "#1A1D21",
+          500: "#363A3D",
+          600: "#76828D",
+          700: "#ABB8C4",
         },
-        foreground: "#F6F3F4",
       },
       borderRadius: {
         lg: "var(--radius)",
